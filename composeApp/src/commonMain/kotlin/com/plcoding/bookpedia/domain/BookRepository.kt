@@ -5,4 +5,6 @@ import com.plcoding.bookpedia.core.domain.Result
 
 interface BookRepository {
     suspend fun searchBooks(query: String): Result<List<Book>, DataError.RemoteError>
+
+    suspend fun getBookDetails(bookId: String): Result<String?, DataError>
 }
