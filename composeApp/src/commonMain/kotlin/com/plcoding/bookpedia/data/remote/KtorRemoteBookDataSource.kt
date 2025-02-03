@@ -4,6 +4,7 @@ package com.plcoding.bookpedia.data.remote
 import com.plcoding.bookpedia.core.data.safeCall
 import com.plcoding.bookpedia.core.domain.DataError
 import com.plcoding.bookpedia.core.domain.Result
+import com.plcoding.bookpedia.data.dto.BookWorkDto
 import com.plcoding.bookpedia.data.dto.SearchResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -30,6 +31,16 @@ class KtorRemoteBookDataSource(
                     "fields",
                     "key,title,author_name,author_key,cover_edition_key,cover_i,ratings_average,ratings_count,first_publish_year,language,number_of_pages_median,edition_count"
                 )
+            }
+        }
+    }
+
+    override suspend fun getBookDetails(bookId: String): Result<BookWorkDto, DataError.RemoteError> {
+        return safeCall<BookWorkDto> {
+            httpClient.get(
+                urlString = "$BASE_URL/works/$bookId.json"
+            ){
+                parameter("fields", "description")
             }
         }
     }
