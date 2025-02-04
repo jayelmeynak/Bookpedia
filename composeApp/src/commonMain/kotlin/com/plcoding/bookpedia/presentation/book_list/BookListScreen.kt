@@ -109,7 +109,8 @@ private fun BookListScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(DarkBlue)
-            .statusBarsPadding()
+            .statusBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BookSearchBar(
             searchQuery = state.searchQuery,
