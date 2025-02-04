@@ -1,5 +1,9 @@
 package com.plcoding.bookpedia.app
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +39,24 @@ fun App() {
             navigation<Route.BookGraph>(
                 startDestination = Route.BookList
             ) {
-                composable<Route.BookList> {
+                composable<Route.BookList>(
+                    exitTransition = {
+                        slideOutHorizontally(
+                            animationSpec = tween(
+                                durationMillis = 750,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) { initialOffset -> initialOffset }
+                    },
+                    popEnterTransition = {
+                        slideInHorizontally(
+                            animationSpec = tween(
+                                durationMillis = 750,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) { initialOffset -> initialOffset }
+                    }
+                ) {
                     val viewModel = koinViewModel<BookListViewModel>()
                     val selectedBookViewModel =
                         it.sharedKoinViewModel<SelectedBookViewModel>(navController = navController)
@@ -52,7 +73,28 @@ fun App() {
                         }
                     )
                 }
-                composable<Route.BookDetail> { backStackEntry ->
+                composable<Route.BookDetail>(
+                    enterTransition = {
+                        slideInHorizontally(
+                            animationSpec = tween(
+                                durationMillis = 750,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) { initialOffSet ->
+                            initialOffSet
+                        }
+                    },
+                    popExitTransition = {
+                        slideOutHorizontally(
+                            animationSpec = tween(
+                                durationMillis = 750,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) { initialOffSet ->
+                            initialOffSet
+                        }
+                    }
+                ) { backStackEntry ->
                     val selectedBookViewModel =
                         backStackEntry.sharedKoinViewModel<SelectedBookViewModel>(navController = navController)
                     val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()

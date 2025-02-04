@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,7 +20,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +46,7 @@ import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import com.plcoding.bookpedia.core.presentation.DarkBlue
 import com.plcoding.bookpedia.core.presentation.DesertWhite
+import com.plcoding.bookpedia.core.presentation.PulseAnimation
 import com.plcoding.bookpedia.core.presentation.SandYellow
 import com.plcoding.bookpedia.utils.PlatformType
 import com.plcoding.bookpedia.utils.getPlatformType
@@ -143,7 +144,13 @@ private fun BookImage(
             targetState = imageLoadResult
         ) { result ->
             when (result) {
-                null -> CircularProgressIndicator()
+                null -> Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    PulseAnimation(modifier = Modifier.size(60.dp))
+                }
+
                 else -> {
                     Box {
                         Image(
@@ -152,8 +159,7 @@ private fun BookImage(
                             },
                             contentDescription = stringResource(Res.string.book_cover),
                             modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Transparent),
+                                .fillMaxSize(),
                             contentScale = if (result.isSuccess) ContentScale.Crop else ContentScale.Fit
                         )
                         IconButton(
