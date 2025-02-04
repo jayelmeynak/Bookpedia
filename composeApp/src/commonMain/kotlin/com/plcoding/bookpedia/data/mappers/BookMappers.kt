@@ -24,7 +24,7 @@ fun SearchedBookDto.toBook(): Book {
     )
 }
 
-fun Book.toBookEntity(): BookDbo {
+fun Book.toBookDbo(): BookDbo {
     return BookDbo(
         id = id,
         title = title,
@@ -36,6 +36,22 @@ fun Book.toBookEntity(): BookDbo {
         ratingsAverage = averageRating,
         ratingsCount = ratingCount,
         numPagesMedian = numPages,
+        numEditions = numEditions
+    )
+}
+
+fun BookDbo.toBook(): Book {
+    return Book(
+        id = id,
+        title = title,
+        description = description,
+        imageUrl = imageUrl,
+        language = languages,
+        authors = authors,
+        firstPublishYear = firstPublishYear,
+        averageRating = ratingsAverage,
+        ratingCount = ratingsCount,
+        numPages = numPagesMedian,
         numEditions = numEditions
     )
 }
